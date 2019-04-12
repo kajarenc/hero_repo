@@ -1,0 +1,14 @@
+# docker-compose.yml
+version: '3'
+services:
+  telegram-app:
+    image: telegram-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+#    volumes:
+#      - "./:/app"
+
+#  database:
+#    image: postgres
+#    restart: always
