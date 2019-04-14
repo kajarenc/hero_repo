@@ -19,7 +19,11 @@ bot.
 
 import logging
 
+from datetime import datetime
+
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+
+from database import User, session
 
 # Enable logging
 logging.basicConfig(format='    %(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -32,6 +36,20 @@ logger = logging.getLogger(__name__)
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(update, context):
     """Send a message when the command /start is issued."""
+    full_name = update.effective_user.full_name
+    username = update.effective_user.username
+    chat_id = update.effective_chat.id
+    new_user = User(
+        username=username,
+        chat_id=chat_id,
+        date=datetime.today(),
+        full_name=full_name
+    )
+    session.add(new_user)
+    session.commit()
+    logger.info(f'username: {username}')
+    logger.info(f'full_name: {full_name}')
+    logger.info(f'chat_id: {chat_id}')
     update.message.reply_text('Hi!')
 
 
@@ -58,6 +76,8 @@ def main():
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
     updater = Updater("665864512:AAHJ7mnoPo7KhrJx7XKwUoEFRgmjQXRWkYo", use_context=True)
+
+    # bot name "Gggjgfhcgcugdf"
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
