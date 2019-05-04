@@ -20,8 +20,6 @@ def send_posts_to_users():
         # TODO use celery chunks here
         send_telegram_message.delay(59911481)
 
-    return "URA"
-
 
 app.conf.beat_schedule = {
     "send_posts_to_users": {
