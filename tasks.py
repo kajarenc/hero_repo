@@ -2,23 +2,28 @@ import telegram
 from celery import Celery
 from celery.schedules import crontab
 
+from database import User, session
+
 app = Celery('tasks', broker="amqp://guest:guest@rabbitmq:5672")
 
 
 @app.task
-def send_telegram_message(chat_id):
+def send_telegram_message(user_id):
+    user = session.query(User).get(user_id)
+
     bot = telegram.Bot(token="665864512:AAHJ7mnoPo7KhrJx7XKwUoEFRgmjQXRWkYo")
-    bot.send_message(chat_id=chat_id, text="Test message")
+    bot.send_message(chat_id=user.chat_id, text="Test message, post_id={}".format(user.last_post_id))
+
+    user.last_post_id += 1
+    session.commit()
 
 
 @app.task
 def send_posts_to_users():
-    # TODO get users from database
-    users = [1, 2]
-
-    for _ in users:
-        # TODO use celery chunks here
-        send_telegram_message.delay(59911481)
+    # TODO optimize work with db, investigate sqlalchemy init right way
+    users = session.query(User).all()
+    for user in users:
+        send_telegram_message.delay(user.id)
 
 
 app.conf.beat_schedule = {
