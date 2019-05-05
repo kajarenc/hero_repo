@@ -71,6 +71,7 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
+    # TODO use environment variable for Telegram token
     updater = Updater("665864512:AAHJ7mnoPo7KhrJx7XKwUoEFRgmjQXRWkYo", use_context=True)
 
     # bot name "Gggjgfhcgcugdf"
