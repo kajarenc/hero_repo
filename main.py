@@ -27,7 +27,6 @@ from database import User, session
 
 # Enable logging
 logging.basicConfig(format='    %(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-
 logger = logging.getLogger(__name__)
 
 
@@ -59,8 +58,6 @@ def help(update, context):
 
 def echo(update, context):
     """Echo the user message."""
-    logger.info("REPLYED WITH TEXT %s" % update.message.chat.username)
-    logger.info("USER ID!!!!! %s" % update.message.from_user.id)
     update.message.reply_text(update.message.text)
 
 
