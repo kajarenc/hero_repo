@@ -1,3 +1,4 @@
+import os
 import telegram
 from celery import Celery
 from celery.schedules import crontab
@@ -10,8 +11,8 @@ app = Celery('tasks', broker="amqp://guest:guest@rabbitmq:5672")
 @app.task
 def send_telegram_message(user_id):
     user = session.query(User).get(user_id)
-
-    bot = telegram.Bot(token="665864512:AAHJ7mnoPo7KhrJx7XKwUoEFRgmjQXRWkYo")
+    telegram_token = os.environ["TELEGRAM_TOKEN"]
+    bot = telegram.Bot(token=telegram_token)
     bot.send_message(chat_id=user.chat_id, text="Test message, post_id={}".format(user.last_post_id))
 
     user.last_post_id += 1

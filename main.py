@@ -16,13 +16,10 @@ Basic Echo bot example, repeats messages.
 Press Ctrl-C on the command line or send a signal to the process to stop the
 bot.
 """
-
+import os
 import logging
-
 from datetime import datetime
-
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-
 from database import User, session
 
 # Enable logging
@@ -71,8 +68,9 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    # TODO use environment variable for Telegram token
-    updater = Updater("665864512:AAHJ7mnoPo7KhrJx7XKwUoEFRgmjQXRWkYo", use_context=True)
+
+    telegram_token = os.environ["TELEGRAM_TOKEN"]
+    updater = Updater(telegram_token, use_context=True)
 
     # bot name "Gggjgfhcgcugdf"
 
