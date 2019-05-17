@@ -30,6 +30,6 @@ def send_posts_to_users():
 app.conf.beat_schedule = {
     "send_posts_to_users": {
         "task": "tasks.send_posts_to_users",
-        "schedule": crontab()
+        "schedule": crontab(minute="*/5")
     }
 }
